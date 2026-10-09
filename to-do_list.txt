@@ -1,2 +1,2 @@
-hi|False
+hi|True
 bye|False

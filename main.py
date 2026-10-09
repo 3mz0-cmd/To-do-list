@@ -4,8 +4,9 @@ def menu():
     print("To-do List App")
     print("1.Add a Task")
     print("2.Remove a Task")
-    print("3.View Tasks")
-    print("4.Quit")
+    print("3.Mark task as done")
+    print("4.View Tasks")
+    print("5.Quit")
 
 def add_task():
     add_input = input("Enter your task:\n")
@@ -29,7 +30,22 @@ def remove_task():
         else: 
             tasks.pop(remove_input)
             print("Successfully removed a task!\n")
-        
+
+def complete_tasks():
+    if not tasks:
+        print("Your to-do list is empty.\n")
+    else:
+        complete_input = input("Which task have you completed?\n")
+
+        if complete_input not in tasks:
+            print("This task is not in your to-do list.\n")
+
+        elif tasks[complete_input] == True:
+            print("This task is already completed.\n")
+        elif tasks[complete_input] == False:
+            tasks[complete_input] = True
+            print(f"You've completed '{complete_input}'\n")
+
 def view_tasks():
     if not tasks:
         print("Your to-do list is empty\n")
@@ -76,9 +92,12 @@ def app():
             remove_task()
             continue
         elif option == "3":
-            view_tasks()
+            complete_tasks()
             continue
         elif option == "4":
+            view_tasks()
+            continue
+        elif option == "5":
             save_tasks()
             print("Goodbye!")
             break
