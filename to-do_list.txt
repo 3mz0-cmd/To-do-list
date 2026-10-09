@@ -1,0 +1,2 @@
+Finish to-do list app | True
+Finish next project | False
