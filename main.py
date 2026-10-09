@@ -10,7 +10,7 @@ def menu():
 
 def add_task():
     add_input = input("Enter your task:\n")
-    if not add_input:
+    if not add_input.strip():
         print("Please enter a task!")
     elif add_input in tasks:
         print("This task was already added!\n")
@@ -44,6 +44,7 @@ def complete_tasks():
             print("This task is already completed.\n")
         elif tasks[complete_input] == False:
             tasks[complete_input] = True
+            save_tasks()
             print(f"You've completed '{complete_input}'\n")
 
 def view_tasks():
@@ -69,6 +70,9 @@ def load_tasks():
         with open("to-do_list.txt" , "r") as file:
             for line in file:
                 parts = line.split("|")
+                if parts != 2:
+                    continue
+
                 task = parts[0].strip()
                 status = parts[1].strip() == "True"
                 tasks[task] = status                
@@ -102,6 +106,6 @@ def app():
             print("Goodbye!")
             break
         else: 
-            print("Invalid  option. Choose from 1-4 only!\n")
+            print("Invalid  option. Choose from 1-5 only!\n")
             continue
 app()
