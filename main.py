@@ -9,10 +9,14 @@ def menu():
 
 def add_task():
     add_input = input("Enter your task:\n")
-    if add_input in tasks:
+    if not add_input:
+        print("Please enter a task!")
+    elif add_input in tasks:
         print("This task was already added!\n")
+
     else:
-        tasks.append(add_input)
+        status = False
+        tasks[add_input] = status
         print("Successfully added a task!\n")
 
 def remove_task():
@@ -23,7 +27,7 @@ def remove_task():
         if remove_input not in tasks:
             print("This task isn't in your to-do list\n")
         else: 
-            tasks.remove(remove_input)
+            tasks.pop(remove_input)
             print("Successfully removed a task!\n")
         
 def view_tasks():
@@ -31,22 +35,31 @@ def view_tasks():
         print("Your to-do list is empty\n")
     else:
         print("Your tasks:")
-        for i, task in enumerate(tasks, start=1):
-            print(f"{i}. {task}")
+        for i, (task , status) in enumerate(tasks.items(), start=1):
+            if status:
+                status_text = "Complete!"
+            else:
+                status_text = "Pending..."
+            print(f"{i}. {task} | Status: {status_text}")
         print("Successfully viewed your tasks!\n")
 
 def save_tasks():
     with open("to-do_list.txt" , "w") as file:
-        for task in tasks:
-            file.write(task + "\n")
+        for task , status in tasks.items():
+            file.write(task +"|" + str(status) + "\n")
 
 def load_tasks():
     try:
         with open("to-do_list.txt" , "r") as file:
-            for task in file:
-                task = task.strip()
-                tasks.append(task)
+            for line in file:
+                parts = line.split("|")
+                task = parts[0].strip()
+                status = parts[1].strip() == "True"
+                tasks[task] = status                
+                
     except FileNotFoundError:
+        pass
+    except IndexError:
         pass
 
 def app():
@@ -70,6 +83,6 @@ def app():
             print("Goodbye!")
             break
         else: 
-            print("Invalid  option. Choose from 1-4 only!")
+            print("Invalid  option. Choose from 1-4 only!\n")
             continue
 app()
